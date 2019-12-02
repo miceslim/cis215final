@@ -19,7 +19,7 @@ class Reward:
     def __str__(self):
         return self.name
 
-class ChuckECHeeseToken(Reward):
+class ChuckECheeseToken(Reward):
     def __init__(self):
         self.name = "Chuck E Cheese Token"
         self.value = 1

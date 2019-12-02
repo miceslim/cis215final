@@ -32,6 +32,38 @@ class RustySword(Weapon):
         self.value = 100
 
 
+class LaserSaber(Weapon):
+    def __init__(self):
+        self.name = "Laser Saber"
+        self.description = "A light saber used for close hand fighting with any enemy."
+        self.damage = 30
+        self.value = 10
+
+class BlobBlaster(Weapon):
+    def __init__(self):
+        self.name = "Blob Blaster"
+        self.description = "A laser gun with special blob stopping abilities." \
+                           "Used to shoot Slimy Blobs."
+        self.damage = 10
+        self.value = 20
+
+class Phaser(Weapon):
+    def __init__(self):
+        self.name = "Phaser"
+        self.description = "Laser gun with single pinpoint laser, " \
+                           "Used to shoot parasites."
+        self.damage = 20
+        self.value = 100
+
+class DeadSword(Weapon):
+    def __init__(self):
+        self.name = "The Dead Sword"
+        self.description = "Sword used to fight the Chimpanzee’s Shadow"
+
+        self.damage = 5
+        self.value = 50
+
+
 class ThingsToEat:
     """ThingsToEat class will raise a NotImplementedError if the instance of
        ThingsToEat has not been previously created.
@@ -51,7 +83,7 @@ class ThingsToEat:
     def __str__(self):
         return "{} (+{} HP)".format(self.name, self.healing_value)
 
-class DayOldFrenchBaguette(ThingsToEat:
+class DayOldFrenchBaguette(ThingsToEat):
     def __init_(self):
         self.name = "Day Old French Baguette"
         self.healing_value = 8
