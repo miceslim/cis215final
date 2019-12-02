@@ -34,7 +34,7 @@ import configparser
 import random
 
 import classes.enemies as enemies
-
+import classes.reward as reward
 
 class MapTile:
     def __init__(self, x, y):
