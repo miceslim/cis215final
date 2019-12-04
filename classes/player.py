@@ -5,12 +5,12 @@ class Player:
         self.world = World
 
         self.inventory = [items.Rock(),
-                          items.Dagger(),
-                          items.CrustyBread()]
+                          items.Dagger()]
         self.x = self.world.start_tile_location[0]
         self.y = self.world.start_tile_location[1]
         self.hp = 100
         self.gold = 5
+        self.credit = 5
 
 
     def is_alive(self):
@@ -23,9 +23,7 @@ class Player:
         print("Gold: {}".format(self.gold))
 
     def heal(self):
-        consumables = [item for item in self.inventory
-
-                       if isinstance(item, items.Consumable)]
+        consumables = [item for item in self.inventory if isinstance(item, items.ThingsToEat)]
         if not consumables:
             print("You don't have any items to heal you!")
             return
