@@ -131,29 +131,6 @@ class EndGameTile(MapTile):
         Congratulations! You have beaten the game!
         """
 
-
-class FindGoldTile(MapTile):
-    def __init__(self, x, y):
-        self.gold = random.randint(1, 50)
-        self.gold_claimed = False
-        super().__init__(x, y)
-
-    def modify_player(self, player):
-        if not self.gold_claimed:
-            self.gold_claimed = True
-            player.gold = player.gold + self.gold
-            print("+{} gold added.".format(self.gold))
-
-    def intro_text(self):
-        if self.gold_claimed:
-            return """
-            Another unremarkable part of the cave. You must forge onwards.
-            """
-        else:
-            return """
-            Someone dropped some gold. You pick it up.
-            """
-
 class FindItem(MapTile):
     def __init__(self, x, y):
         """Creates a tile that enables the player to find an item
@@ -425,9 +402,7 @@ class World:
         "EN": EnemyTile,
         "ST": StartTile,
         "FI": FindItem,
-        "FG": FindGoldTile,
         "NL": NextLevel,
-        #"VM": TraderTile,
         "SG": SaveGameTile,
         "  ": None,
     }

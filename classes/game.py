@@ -3,7 +3,7 @@ from classes.player import Player
 from collections import OrderedDict
 
 import os
-
+import pickle
 world = World()
 
 
@@ -11,7 +11,7 @@ class Game:
     def __init__(self):
         self.name = "Player"
         self.game_active = False
-
+        self.player_coordinates = -1, -1
 
     def New_Game(self):
         """
@@ -33,21 +33,24 @@ class Game:
         world.Load_Map(map_name) # Will have to move this to somewhere else...
         self.game_active = True # Very last line
 
-
-    def Save_Game(self):
+    def Load_Game(self):
         """
-         Saves game to a configuration file in order to load.
-        Current Status: Not working.
+        Loads a previous game save if available.
         """
-        if os.path.isfile(""):
-            user_input = input("Would you like to overwrite the previous save file? [y/n]")
 
-            if user_input in ['Y', 'y']:
-                print("Overwriting game save...")
-                ### WRITE STUFF TO GAME SAVE FILE.INI
+        # 0 = Player name, 1 = map configuration information, 2 = current map / level, 3 = player coordinates, 4 = player inventory
+        load_game = open('gamesave.txt')
+        load_values = pickle.load(load_game)
 
-            else:
-                print("Nothing saved...")
+        self.name = load_values[0]
+        world.map_information = load_values[1]
+        world.current_map = load_values[2]
+        self.player_coordinates = str(load_values[3]).split(',')
+
+        # Inventory has not passed over yet
+
+
+
 
     def Play_Game(self):
         """
@@ -56,6 +59,11 @@ class Game:
         """
         player = Player(world) # instantiate new player by giving it the loaded world model so it has all the map information.
         player.name = self.name
+        print(player.name)
+
+
+        if self.player_coordinates != (-1, -1): # if player has loaded from a save file
+            print(" COORDINATES: %s, %s " % self.player_coordinates)
 
         while player.is_alive() and self.game_active:
             room = world.tile_at(player.x, player.y) # Get current tile / room

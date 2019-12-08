@@ -10,7 +10,11 @@ Description: A python (3.7), text based game. Final project
 
 """
 
+import pickle
+import os
+
 from classes.game import Game
+
 current_game = Game()
 
 def main():
@@ -49,7 +53,10 @@ def NewGame():
 
 
 def LoadGame():
-    print("Sorry, this functionality is not yet implemented... ")
+    if os.path.exists("gamesave.txt"):
+        current_game.Load_Game()
+    else:
+        print("No previous game save.")
 
 def About():
     print("\t ABOUT PROJECT ")
@@ -58,6 +65,7 @@ def About():
     print("Institution: Coconino Community College")
     print("Project: Final Project")
     print("Description:  A text based adventure game written in Python 3.7!")
+    print("Technical Design Documentation: https://tinyurl.com/cis215final")
 
 def ExitGame():
     print("Goodbye...")
