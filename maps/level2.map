@@ -1,0 +1,12 @@
+[information]
+name = Strange Planet
+intro = After surviving the crash landing, you wake up on a strange planet...
+next_level = 1
+
+[layout]
+design =
+    |  |  |EG|  |  |
+    |  |EG|FG|NL|  |
+    |  |  |FG|  |  |
+    |  |  |ST|  |  |
+    |  |  |  |  |  |
