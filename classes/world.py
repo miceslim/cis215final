@@ -386,10 +386,10 @@ class SaveGameTile(MapTile):
             self.save_file(save_data)
 
     def save_file(self, save_data):
-        #with open('/etc/gamesave.txt', 'wb'):
         save_game = open('gamesave.txt', 'wb')
         pickle.dump(save_data, save_game)
         print("Game has been saved!")
+        save_game.close()
 
 
 class World:
