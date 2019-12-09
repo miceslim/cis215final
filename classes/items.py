@@ -1,3 +1,5 @@
+import random
+
 class Weapon:
     def __init__(self):
         raise NotImplementedError("Do not create raw Weapon objects.")
@@ -154,3 +156,30 @@ class TwoBottlesOfAspirin(FindItem):
     def __init__(self):
         self.name = "Two Bottles of Aspirin"  # need to create a formula that connects the FoundItemTile and the TwoBottlesOfAspirin
         self.value = 150
+
+weapon1 = Rock()
+weapon2 = Dagger()
+weapon3 = RustySword()
+weapon4 = LaserSaber()
+weapon5 = BlobBlaster()
+weapon6 = Phaser()
+weapon7 = DreadSword()
+
+consume1 = DayOldFrenchBaguette()
+consume2 = CrustyBread()
+consume3 = RumAndCoke()
+consume4 = FourPackOfRedBull()
+consume5 = BottleOfAspirin()
+
+item1 = BottleOfRum()
+item2 = TwentyChuckECheeseTokens()
+item3 = SixCasesOfRedBull()
+item4 = TwoBottlesOfAspirin()
+
+weaponlist = [weapon1, weapon2, weapon3, weapon4, weapon5, weapon6, weapon7]
+consumelist = [consume1, consume2, consume3, consume4, consume5]
+itemlist = [item1, item2, item3, item4]
+
+randomweapon = random.choice(weaponlist)
+randomconsume = random.choice(consumelist)
+itemlist = random.choice(itemlist)
