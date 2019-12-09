@@ -347,65 +347,61 @@ class FindItem(MapTile):
             print("You found an item. The item you found has {} much credit value.".
                   format(self.findItem.value, player.credit))
 
+
 class AlienTraderTile(MapTile):
-    """Class that creates the AlienTrader tile
-
-        Includes functions that enable AlienTrader to barter for a trade
-        and make a trade.
-
-       -Treasure"""
-
-    def __init__(self, x, y):
-        self.alientrader = npc.AlienTrader()
+    def _init_(self, x, y):
+        self.alienTrader = npc.AlienTrader()
         super().__init__(x, y)
 
-        def willing_to_trade(self, player):
+    def willing_to_trade(self, player):
+        while True:
+            print("""
+            Come see what I have for sell. Let's make a deal. All
+            purchases must be made using Monopoly Money. Enter P to
+            purchase something you like, T to trade me something I
+            might like, or R to return to the previous room.
+            """)
+            player_response = input()
+            if player_response in ['R', 'r']:
+                return
+            elif player_response in ['P', 'p']:
+                print("Here's the list of what I'm selling: ")
+                self.make_the_trade(buyer=player, seller=self.alienTrader)
+            elif player_response in ['T', 't']:
+                print("Here's the list of what I'm willing to trade for: ")
+                self.make_the_trade(buyer=self.alienTrader, seller=player)
+            else:
+                print("Wrong choice bucko!!")
+
+    def make_the_trade(self, buyer, seller):
+        for i, item in enumerate(seller.inventory, 1):
+            print("{}. {] - {} Credit Total".format(i, item.name, item.value))
             while True:
-                print("""
-                Come see what I have for sell. Let's make a deal. All
-                purchases must be made using Monopoly Money. Enter P to
-                purchase something you like, T to trade me something I
-                might like, or R to return to the previous room.
-                """)
-                player_response = input()
+                player_response = input("Choose an item or press R to return to previous room: ")
                 if player_response in ['R', 'r']:
                     return
-                elif player_response in ['P', 'p']:
-                    print("Here's the list of what I'm selling: ")
-                    self.makethetrade(buyer=player, seller=self.alientrader)
-                elif player_response in ['T', 't']:
-                    print("Here's the list of what I'm willing to trade for: ")
-                    self.makethetrade(buyer=self.alientrader, seller=player)
                 else:
-                    print("Wrong choice bucko!!")
+                    try:
+                        player_choice = int(player_response)
+                        make_the_swap = seller.inventory[player_choice - 1]
+                        self.make_the_swap(seller, buyer, make_the_swap)
+                    except ValueError:
+                        print("Wrong choice bucko!!")
 
-        def make_the_trade(self, buyer, seller):
-            for i, item in enumerate(seller.inventory, 1):
-                print("{}. {] - {} Monopoly Money".format(i, item.name, item.value))
-                while True:
-                    player_response = input("Choose an item or press R to return to previous room: ")
-                    if player_response in ['R', 'r']:
-                        return
-                    else:
-                        try:
-                            player_choice = int(player_response)
-                            to_make_the_swap = seller.inventory[player_choice - 1]
-                            self.to_make_the_swap(seller, buyer, make_the_swap)
-                        except ValueError:
-                            print("Wrong choice bucko!!")
-
-        def make_the_swap(self, seller, buyer, item):
-            if item.value > buyer.monopoly_money:
-                print("I don't have enough money.")
-                return
+    def make_the_swap(self, seller, buyer, item):
+        if item.value > buyer.monopoly_money:
+            print("I don't have enough money.")
+            return
+        else:
             seller.inventory.remove(item)
             buyer.inventory.append(item)
             seller.monopoly_money = seller.monopoly_money + item.value
             buyer.monopoly_money = buyer.monopoly_money - item.value
             print("Thanks for trading with me! Come back soon!")
+            buyer.CreditTotal = buyer.monopoly_money
 
-        def intro_text(self):
-            return """
+    def alien_trader_tile_intro_text(self):
+        return """
             A slithering, hunchbacked creature with a single eye in the middle
             of his forehead pushes a cart with supplies you recognize as items
             you might find back on your home planet. As you gather the courage
@@ -414,6 +410,161 @@ class AlienTraderTile(MapTile):
             there is no haggling, and his currency is Monopoly Money. You stifle
             a laugh as you consider the absurd conditions you find yourself in.
             He does, after all, have items you are in desperate need of..."""
+
+
+class HiLineVendingMachineTile(MapTile):
+    # is missing modify player function, will not work without it.
+    """Class that makes the HiLineVendingMachineTile.
+
+       Includes functions that enable the HiLineVendingMachine to make a
+       sales pitch to the player and sell items to the player.
+
+       -Treasure"""
+
+    def __init__(self, x, y):
+        self.hi_line_vending_machine = npc.HiLineVendingMachine()
+        super().__init__(x, y)
+
+    def the_pitch(self, player):
+        while True:
+            print("""
+                    Four packs of Red Bull for sale! Day Old French Baguettes
+                    for sale! Rum and Cokes for sale! Aspirin for sale!
+                    Monopoly Money, Chuck E Cheese Tokens, and Visa Gift Cards
+                    accepted as payment. Enter P to purchase something you like,
+                    or enter R to return to the previous room.
+                    """)
+            player_response = input()
+            if player_response in ['R', 'r']:
+                return
+            elif player_response in ['P', 'p']:
+                print("Here's the list of what I'm selling: ")
+                self.the_sale(buyer=player, seller=self.hi_line_vending_machine)
+            else:
+                print("Incorrect choice entered.")
+
+    def the_sale(self, buyer, seller):
+        buyer.CreditTotal = buyer.monopoly_money
+        buyer.CreditTotal = buyer.chuck_e_cheese_token
+        buyer.CreditTotal = buyer.visa_gift_card
+
+        for i, item in enumerate(seller.inventory, 1):
+            print("{}. {] - {} CreditTotal".format(i, item.name, item.value))
+            while True:
+                player_response = input("Choose an item or press Q to exit: ")
+                if player_response in ['R', 'r']:
+                    return
+                else:
+                    try:
+                        player_choice = int(player_response)
+                        make_the_sale = seller.inventory[player_choice - 1]
+                        self.make_the_sale(seller, buyer, make_the_sale)
+                    except ValueError:
+                        print("Incorrect choice entered.")
+
+    def make_the_sale(self, seller, buyer, item):
+        if item.value > buyer.CreditTotal:
+            print("I don't have enough money.")
+            return
+        else:
+            seller.inventory.remove(item)
+            buyer.inventory.append(item)
+            seller.CreditTotal = seller.CreditTotal + item.value
+            buyer.CreditTotal = buyer.CreditTotal - item.value
+            print("Thanks for using HiLine Vending. Have a nice day.")
+
+    def intro_text(self):
+        return """
+        As you walk along the desolate road, you are drawn to light that
+        beckons you. Thinking you must be hallucinating or seeing something
+        like an oasis in a desert, you carefully approach the thing that is
+        casting off so much light in an otherwise dimly lit atmosphere. You
+        are surprised to come face to face with a HiLine Vending Machine,
+        something you know all to well from your days in elementary and high
+        school days. This vending machine isn't filled with the usual
+        merchandise like candy bars and Gatorades. It offers you four items
+        in multiple amounts. In its computerized voice, the machine asks
+        you to make your selection, telling you it accepts any method of
+        payment you might have. After the battles you just faced, this machine
+        may just be your lifeline...
+        """
+
+
+### *** IS MISSING MODIFY_PLAYER which houses functionality. Can not implement until finished... ***
+# class SpecialRoomTile(MapTile):
+#     def __init__(self, x, y):
+#         """Creates rewards for the player that are chosen based on the random
+#
+#
+#
+#            number generator function once the player enters the special room.
+#            Built into the function are found/missing text statements that will
+#            populate if the reward has already been claimed if the player has
+#            visited the room."""
+#
+#         r = random.random()
+#         if r < 0.60:
+#             self.reward = reward.ChuckECheeseToken()
+#             self.found_text = """
+#                 You found a chest of Chuck E. Cheese Tokens.
+#                 You can use these to buy much needed supplies!
+#                 """
+#
+#             self.missing_text = """
+#                 An empty chest indicates someone beat you
+#                 this room."""
+#
+#         elif r < 0.75:
+#             self.reward = reward.MonopolyMoney()
+#             self.found_text = """
+#                 You find a Monopoly game set overflowing with
+#                 Monopoly money, a Monopoly game board, and a
+#                 few game pieces. Congrats on your lucky find!
+#                 Use this Monopoly Money to buy supplies from
+#                 the vending machine.
+#                               """
+#
+#             self.missing_text = """
+#                 You find a Monopoly game set containing a
+#                 Monopoly game board and a few game pieces
+#                 but all of the Monopoly money has been taken.
+#                 Better luck next time."""
+#
+#         elif r < 0.85:
+#             self.reward = reward.VisaGiftCard()
+#             self.found_text = """
+#                 Lucky you, you stumbled across a wallet
+#                 containing a visa gift card. Use this visa
+#                 gift card to stock up on supplies at your
+#                 neighborhood vending machine.
+#                 """
+#
+#             self.missing_text = """
+#                 You discover a wallet with a driver's
+#                 license, a photo of happy family, a Sam's
+#                 club membership card, and a Blockbuster
+#                 Video rental card. One slot in the wallet
+#                 is missing a rather valuable card.
+#                 """
+#         else:
+#             self.reward = reward.TwentyCasesOfRedBull()
+#             self.found_text = """
+#                 Upon clearing the cobwebs off a very dirty
+#                 set of bookshelves you discover, much to your
+#                 delight, twenty cases of Red Bull. Use these
+#                 to restore your strength between battles with
+#                 enemies.
+#                 """
+#
+#             self.missing_text = """
+#                 Nearing a set of bookshelves that look
+#                 conspicously clean compared to the rest of
+#                 the room, you find a few empty cans of Red
+#                 Bull and the outline of what appears to
+#                 have been a stockpile of the delicious
+#                 drink. Sadly, it looks like someone beat
+#                 you to whatever was stockpiled there.
+#                 """
 
 
 class NextLevel(MapTile):
@@ -506,6 +657,8 @@ class World:
         "FI": FindItem,
         "NL": NextLevel,
         "SG": SaveGameTile,
+        "VM": HiLineVendingMachineTile,
+        #"SR": SpecialRoomTile,
         "  ": None,
     }
 
