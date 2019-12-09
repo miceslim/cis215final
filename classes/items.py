@@ -12,7 +12,7 @@ class Rock(Weapon):
         self.description = "A fist-sized rock, suitable for bludgeoning."
         self.damage = 5
         self.value = 1
-        super().__init__()
+
 
 class Dagger(Weapon):
     def __init__(self):
@@ -21,7 +21,7 @@ class Dagger(Weapon):
                            "Somewhat more dangerous than a rock."
         self.damage = 10
         self.value = 20
-        super().__init__()
+
 
 class RustySword(Weapon):
     def __init__(self):
@@ -30,7 +30,7 @@ class RustySword(Weapon):
                            "but still has some fight in it."
         self.damage = 20
         self.value = 100
-        super().__init__()
+
 
 class LaserSaber(Weapon):
     def __init__(self):
@@ -38,7 +38,6 @@ class LaserSaber(Weapon):
         self.description = "A light saber used for close hand fighting with any enemy."
         self.damage = 30
         self.value = 10
-        super().__init__()
 
 class BlobBlaster(Weapon):
     def __init__(self):
@@ -47,7 +46,6 @@ class BlobBlaster(Weapon):
                            "Used to shoot Slimy Blobs."
         self.damage = 10
         self.value = 20
-        super().__init__()
 
 class Phaser(Weapon):
     def __init__(self):
@@ -56,7 +54,6 @@ class Phaser(Weapon):
                            "Used to shoot parasites."
         self.damage = 20
         self.value = 100
-        super().__init__()
 
 class DeadSword(Weapon):
     def __init__(self):
@@ -65,7 +62,7 @@ class DeadSword(Weapon):
 
         self.damage = 5
         self.value = 50
-        super().__init__()
+
 
 class ThingsToEat:
     """ThingsToEat class will raise a NotImplementedError if the instance of
@@ -91,35 +88,32 @@ class DayOldFrenchBaguette(ThingsToEat):
         self.name = "Day Old French Baguette"
         self.healing_value = 8
         self.value = 14
-        super().__init__()
+
 
 class CrustyBread(ThingsToEat):
     def __init__(self):
         self.name = "Crusty Bread"
         self.healing_value = 10
         self.value = 12
-        super().__init__()
 
 class RumAndCoke(ThingsToEat):
     def __init__(self):
         self.name = "Rum and Coke"
         self.healing_value = 25
         self.value = 30
-        super().__init__()
 
 class FourPackOfRedBull(ThingsToEat):
     def __init__(self):
         self.name = "Four Pack of Red Bull"
         self.healing_value = 35
         self.value = 40
-        super().__init__()
 
 class BottleOfAspirin(ThingsToEat):
     def __init__(self):
         self.name = "Bottle of Aspirin"
         self.healing_value = 65
         self.value = 75
-        super().__init__()
+
 
 class FindItem:
     """FindItem class will raise a NotImplementedError if FindItem has not
@@ -144,22 +138,19 @@ class BottleOfRum(FindItem):
     def __init__(self):
         self.name = "Bottle of Rum"
         self.value = 30
-        super().__init__()
 
 class TwentyChuckECheeseTokens(FindItem):
     def __init__(self):
         self.name = "Twenty Chuck E Cheese Tokens"
         self.value = 20
-        super().__init__()
 
 class SixCasesOfRedBull(FindItem):
     def __init__(self):
         self.name = "Six Cases of Red Bull"
         self.value = 125
-        super().__init__()
+
 
 class TwoBottlesOfAspirin(FindItem):
     def __init__(self):
         self.name = "Two Bottles of Aspirin"  # need to create a formula that connects the FoundItemTile and the TwoBottlesOfAspirin
         self.value = 150
-        super().__init__()

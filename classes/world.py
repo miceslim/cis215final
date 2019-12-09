@@ -32,16 +32,20 @@ import glob
 import os
 import configparser
 import random
+import pickle
 
 import classes.enemies as enemies
+import classes.boss as boss
 import classes.reward as reward
 import classes.npc as npc
 import classes.items as items
+
 
 class MapTile:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.name = "Player"
         self.map_intro = None
         self.map_name = None
 
@@ -61,8 +65,13 @@ class MapTile:
     def level_name(self, name):
         self.map_name = name
 
-    def modify_player(self, player):
-        pass
+    @property
+    def player_name(self):
+        return self.name
+
+    @player_name.setter
+    def player_name(self, player):
+        self.name = player.name
 
 class StartTile(MapTile):
     def intro_text(self):
@@ -72,30 +81,82 @@ class StartTile(MapTile):
         MapTile.level_name = player.world.map_information['name']
         MapTile.intro_text = player.world.map_information['intro']
 
+
 class EnemyTile(MapTile):
+    """ Enemies that you will encounter throughout the game
+    - Nick
+    """
     def __init__(self, x, y):
         r = random.random()
-        if r < 0.50:
-            self.enemy = enemies.GiantSpider()
-            self.alive_text = "A giant spider jumps down from " \
-                              "its web in front of you!"
-            self.dead_text = "The corpse of a dead spider " \
-                             "rots on the ground."
-        elif r < 0.80:
-            self.enemy = enemies.Ogre()
-            self.alive_text = "An ogre is blocking your path!"
-            self.dead_text = "A dead ogre reminds you of your triumph."
+        if r < 0.20:
+            self.enemy = enemies.Parasite()
+            self.alive_text = """
+                A parasitic lifeform rushes toward you!
+            """
+
+            self.dead_text = """
+                The corpse of a Parasite lies motionless on the ground.
+                It looks rather crab-like and might be tasty if boiled and
+                served with some garlic butter, but
+                there's time to think about food later. Onward!
+                """
+        elif r < 0.60:
+            self.enemy = enemies.ParasiteZ()
+            self.alive_text = """
+                A Parasite... no, a Parasite Zombie emerges from the darkness!
+                """
+
+            self.dead_text = """
+                The Parasite has lost its grip, and
+                the form underneath is revealed to be
+                human. It seems like others have crash
+                landed here. They were either ambushed
+                or voluntarily coupled with it in a
+                desperate attempt to stay warm. Some fool probably
+                even found a sleeping one and put
+                it on like a fancy hat.
+                """
+
+        elif r < 0.70:
+            self.enemy = enemies.GhostMonkey()
+            self.alive_text = """
+                An unerving feeling shivers down your spine.
+                A Chimpanzee's Shadow materializes
+                """
+
+            self.dead_text = """
+                The Shadow disappeared from this spot,
+                although a faint scent of bananas permeates the area.
+                There's a small, abondoned space suit,
+                decades old, covered in moss nearby.
+                """
         elif r < 0.95:
-            self.enemy = enemies.BatColony()
-            self.alive_text = "You hear a squeaking noise growing louder" \
-                              "...suddenly you are lost in s swarm of bats!"
-            self.dead_text = "Dozens of dead bats are scattered on the ground."
+            self.enemy = enemies.Slime()
+            self.alive_text = """
+                You hear a slurping, goopy noise ahead.
+                ...suddenly you ambushed by a Slimy Blob!
+                """
+
+            self.dead_text = """
+                Chunks of translucent, slimy parts are scattered
+                about the area. There is a strawberry aroma
+                exuding from the chunks. But you shouldn't risk
+                eating something that could be poisonous... right?
+                """
         else:
-            self.enemy = enemies.RockMonster()
-            self.alive_text = "You've disturbed a rock monster " \
-                              "from his slumber!"
-            self.dead_text = "Defeated, the monster has reverted " \
-                             "into an ordinary rock."
+            self.enemy = enemies.SJGolem()
+            self.alive_text = """
+                A Slimy Blob attaches itself to chunks of abandoned machinery and spacecraft!
+                A Space Junk Golem forms!
+                """
+
+            self.dead_text = """
+                The unknown slimy substance has dissapated,
+                and the once monstrous form has reverted to space junk.
+                All of the equipment that merged with the
+                Blob has become sticky and unusable, like spilling soda on
+                an ancient desktop computer. Today's just not your day.
+                """
 
         super().__init__(x, y)
 
@@ -109,42 +170,67 @@ class EnemyTile(MapTile):
             print("Enemy does {} damage. You have {} HP remaining.".
                   format(self.enemy.damage, player.hp))
 
+
+class BossTile(MapTile):
+    """ Handles encountering a boss enemy
+    - Nick
+    """
+    ##edited version of enemytile class, but guaranteed encounter with 1 boss- Nick
+    def __init__(self, x, y):
+        r = random.random()
+        if 0 < r < 1:
+            self.boss = boss.TrashMan()
+            self.alive_text = """
+            Suddenly, the signal rushes toward you! Out of nowhere,
+            a mass of malicious, murderous machinery
+            (say that 3 times fast!)crashes into your path.
+            Hey! It's gripping the transmitter from your ship!
+            And it seems very interested in your undelivered packages.
+            """
+
+            self.dead_text = """
+                The scrambled remains of the hulking garbage disposal
+                lays before you. What caused it to make your ship crash?
+                Why was it so insistant on leaving you stranded?
+                Why did it want your mail?
+                Do robots even get mail?
+                """
+        super().__init__(x, y)
+
+    def intro_text(self):
+        text = self.alive_text if self.boss.is_alive() else self.dead_text
+        return text
+
+    def modify_player(self, player):
+        if self.boss.is_alive():
+            player.hp = player.hp - self.boss.damage
+            print("Boss does {} damage. You have {} HP remaining.".
+                  format(self.boss.damage, player.hp))
+
 class EndGameTile(MapTile):
     """
      Player lands on |EG| Tile, ends the game
     Current Status: Not working.
     """
+
     def modify_player(self, player):
         player.world.game_active = False
 
     def intro_text(self):
         # Disable game_active
         return """
-        Congratulations! You have beaten the game!
+        You finally find the source of the electronic signal: a single working outlet
+        that a broken toaster has been plugged into. You unplug it and witness a miracle: 2 burnt halves
+        of a bagel preserved in ice pop out! 
+        You plug in your transmitter and send out a distress signal, with a nagging feeling in the back
+        of your mind that something still doesn't seem right. Wanting to kill some time, you sort through your mail
+        to get it ready before you're picked up. You notice one package that didn't catch your eye before now:
+        a small, rectangular box with gold wrapping with way too many "Urgent!" labels on it.
+        You don't remember seeing it at all before. You decide to leave it alone for now,
+        relieved that you'll finally get out of here.
+        Congratulations for beating the game! The End!
         """
-
-
-class FindGoldTile(MapTile):
-    def __init__(self, x, y):
-        self.gold = random.randint(1, 50)
-        self.gold_claimed = False
-        super().__init__(x, y)
-
-    def modify_player(self, player):
-        if not self.gold_claimed:
-            self.gold_claimed = True
-            player.gold = player.gold + self.gold
-            print("+{} gold added.".format(self.gold))
-
-    def intro_text(self):
-        if self.gold_claimed:
-            return """
-            Another unremarkable part of the cave. You must forge onwards.
-            """
-        else:
-            return """
-            Someone dropped some gold. You pick it up.
-            """
+    ##some epilogue text-Nick
 
 class FindItem(MapTile):
     def __init__(self, x, y):
@@ -330,57 +416,6 @@ class AlienTraderTile(MapTile):
             He does, after all, have items you are in desperate need of..."""
 
 
-class TraderTile(MapTile):
-    def __init__(self, x, y):
-        self.trader = npc.Trader()
-        super().__init__(x, y)
-
-    def check_if_trade(self, player):
-        while True:
-            print("Would you like to (B)uy, (S)ell, or (Q)uit?")
-            user_input = input()
-            if user_input in ['Q', 'q']:
-                return
-            elif user_input in ['B', 'b']:
-                print("Here's whats available to buy: ")
-                self.trade(buyer=player, seller=self.trader)
-            elif user_input in ['S', 's']:
-                print("Here's whats available to sell: ")
-                self.trade(buyer=self.trader, seller=player)
-            else:
-                print("Invalid choice!")
-
-    def trade(self, buyer, seller):
-        for i, item in enumerate(seller.inventory, 1):
-            print("{}. {} - {} Gold".format(i, item.name, item.value))
-        while True:
-            user_input = input("Choose an item or press Q to exit: ")
-            if user_input in ['Q', 'q']:
-                return
-            else:
-                try:
-                    choice = int(user_input)
-                    to_swap = seller.inventory[choice - 1]
-                    self.swap(seller, buyer, to_swap)
-                except ValueError:
-                    print("Invalid choice!")
-
-    def swap(self, seller, buyer, item):
-        if item.value > buyer.gold:
-            print("That's too expensive")
-            return
-        seller.inventory.remove(item)
-        buyer.inventory.append(item)
-        seller.gold = seller.gold + item.value
-        buyer.gold = buyer.gold - item.value
-        print("Trade complete!")
-
-    def intro_text(self):
-        return """
-        A frail not-quite-human, not-quite-creature squats in the corner
-        clinking his gold coins together. He looks willing to trade.
-        """
-
 class NextLevel(MapTile):
     """
     When the player lands on a |NL| Tile, this functionality will pull the map configuration
@@ -406,6 +441,34 @@ class NextLevel(MapTile):
             You feel a small shock. Everything flashes white. Your eyes adjust; you have been teleported to %s
             """ % MapTile.level_name
         return text
+
+class SaveGameTile(MapTile):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
+    def intro_text(self):
+        return """ 
+            Insert save game text here
+        """
+
+    def modify_player(self, player):
+        # 0 = Player name, 1 = map configuration information, 2 = current map / level, 3 = player coordinates, 4 = player inventory
+        save_data = (self.name, player.world.map_information, player.world.current_map, (str(player.x) + ',' + str(player.y)), player.inventory)
+        if os.path.isfile('gamesave.txt'):
+            ask_question = input('A previous game save exists! Would you like to overwrite? [y/n] : ').lower()
+            if ask_question == 'y':
+                self.save_file(save_data)
+            else:
+                print("Game has not been saved...")
+        else:
+            self.save_file(save_data)
+
+    def save_file(self, save_data):
+        save_game = open('gamesave.txt', 'wb')
+        pickle.dump(save_data, save_game)
+        print("Game has been saved!")
+        save_game.close()
+
 
 class World:
     """
@@ -436,12 +499,13 @@ class World:
 
 
     tile_types = {
+        "BT": BossTile,
         "EG": EndGameTile,
         "EN": EnemyTile,
         "ST": StartTile,
         "FI": FindItem,
-        "FG": FindGoldTile,
         "NL": NextLevel,
+        "SG": SaveGameTile,
         "  ": None,
     }
 

@@ -3,7 +3,7 @@ import classes.items as items
 class Player:
     def __init__(self, World):
         self.world = World
-
+        self.name = "Player"
         self.inventory = [items.Rock(),
                           items.Dagger()]
         self.x = self.world.start_tile_location[0]
