@@ -13,28 +13,37 @@ class Reward:
 
        Written by Treasure Collum
        11/22/19"""
+    
     def __init__(self):
         raise NotImplementedError("Do not create raw Reward objects.")
 
     def __str__(self):
         return self.name
 
+
 class ChuckECheeseToken(Reward):
     def __init__(self):
+        super().__init__()
         self.name = "Chuck E Cheese Token"
         self.value = 1
 
+
 class MonopolyMoney(Reward):
     def __init__(self):
+        super().__init__()
         self.name = "Monopoly Money"
         self.value = 5
 
+
 class VisaGiftCard(Reward):
     def __init__(self):
+        super().__init__()
         self.name = "Visa Gift Card"
         self.value = 25
 
+
 class TwentyCasesOfRedBull(Reward):
     def __init__(self):
+        super().__init__()
         self.name = "Twenty Cases of Red Bull"
         self.value = 75

@@ -442,7 +442,6 @@ class World:
         "FI": FindItem,
         "FG": FindGoldTile,
         "NL": NextLevel,
-        "VM": TraderTile,
         "  ": None,
     }
 
