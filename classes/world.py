@@ -83,6 +83,9 @@ class StartTile(MapTile):
 
 
 class EnemyTile(MapTile):
+    """ Enemies that you will encounter throughout the game
+    - Nick
+    """
     def __init__(self, x, y):
         r = random.random()
         if r < 0.20:
@@ -169,6 +172,9 @@ class EnemyTile(MapTile):
 
 
 class BossTile(MapTile):
+    """ Handles encountering a boss enemy
+    - Nick
+    """
     ##edited version of enemytile class, but guaranteed encounter with 1 boss- Nick
     def __init__(self, x, y):
         r = random.random()
@@ -493,6 +499,7 @@ class World:
 
 
     tile_types = {
+        "BT": BossTile,
         "EG": EndGameTile,
         "EN": EnemyTile,
         "ST": StartTile,

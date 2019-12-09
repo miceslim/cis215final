@@ -1,12 +1,16 @@
 [information]
-name = The Void
-intro = You have managed to escape a catastrophic space craft explosion by jumping on the nearest escape pod.
+name = Malafrigus
+intro =
+    Upon landing, you notice that your communication transmitter has been torn clean from the side of your mailing ship.
+    You read that right: torn. With erratic, can opener-like scrapes where it was installed.
+    What was that object you ran into, anyhow? You decide to use your ship’s scanner to try and find any electronic signal in the vicinity.
+    You find only one signal nearby: due north, through a dense frozen forest, smack dab in the former colony’s center.
 next_level = 2
 
 [layout]
 design =
     |EN|EN|NL|EN|EN|
-    |EN|  |SG|  |EN|
+    |EN|  |BT|  |EN|
     |EN|  |FI|  |  |
     |  |  |ST|  |EN|
     |  |  |EN|  |  |

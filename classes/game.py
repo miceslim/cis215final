@@ -59,8 +59,6 @@ class Game:
         """
         player = Player(world) # instantiate new player by giving it the loaded world model so it has all the map information.
         player.name = self.name
-        print(player.name)
-
 
         if self.player_coordinates != (-1, -1): # if player has loaded from a save file
             print(" COORDINATES: %s, %s " % self.player_coordinates)
@@ -75,9 +73,11 @@ class Game:
 
                 room_strip = str(world.tile_at(player.x, player.y)).split()[0].strip('<')  # checks current tile player is on, strips away unnecessary information.
                 if room_strip == "classes.world.StartTile":
-                    print(room.level_name)
+                    print("Level Name: %s " % room.level_name)
 
                 print(room.intro_text())
+                print(" ")
+
                 self.choose_action(room, player)
 
             elif not player.is_alive():

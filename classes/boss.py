@@ -1,3 +1,7 @@
+"""
+Boss class to handle Boss Tile
+- Nick
+"""
 class BossEnemy:
     def __init__(self):
         raise NotImplementedError("Do not create raw Enemy objects.")

@@ -1,6 +1,10 @@
 [information]
-name = Strange Planet
-intro = After surviving the crash landing, you wake up on a strange planet...
+name = Ghost Town
+intro =
+    After making your way through the frozen forest,
+    you begin to get closer to the signal, pointing right toward an abandoned town.
+    The sight of a once bustling town reduced to frozen ruins fills you with an unnerving feeling.
+    You've got a bad feeling in the pit of your stomach.
 next_level = 1
 
 [layout]
