@@ -9,29 +9,35 @@ class Enemy:
         return self.hp > 0
 
 
-class GiantSpider(Enemy):
+class Parasite(Enemy):
     def __init__(self):
-        self.name = "Giant Spider"
+        self.name = "Parasite"
         self.hp = 10
         self.damage = 2
 
 
-class Ogre(Enemy):
+class ParasiteZ(Enemy):
     def __init__(self):
-        self.name = "Ogre"
+        self.name = "Parasite Zombie"
         self.hp = 30
+        self.damage = 12
+
+
+class Slime(Enemy):
+    def __init__(self):
+        self.name = "Slimy Blob"
+        self.hp = 100
         self.damage = 10
 
 
-class BatColony(Enemy):
+class SJGolem(Enemy):
     def __init__(self):
-        self.name = "Colony of bats"
-        self.hp = 100
-        self.damage = 4
-
-
-class RockMonster(Enemy):
-    def __init__(self):
-        self.name = "Rock Monster"
+        self.name = "Space Junk Golem"
         self.hp = 80
-        self.damage = 15
+        self.damage = 35
+
+class GhostMonkey(Enemy):
+    def __init__(self):
+        self.name = "Chimpanzee's Shadow"
+        self.hp = 50
+        self.damage = 17
