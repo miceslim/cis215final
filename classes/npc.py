@@ -40,7 +40,9 @@ class Trader(NonPlayableCharacter):
     def __init__(self):
         self.name = "Trader"
         self.gold = 100
-        self.inventory = [items.BottleOfRum()]
+        self.inventory = [items.BottleOfRum()
+                         items.randomweapon
+                         items.randomconsume]
 
 class AlienTrader(NonPlayableCharacter):
     def __init__(self):
@@ -49,7 +51,9 @@ class AlienTrader(NonPlayableCharacter):
         self.inventory = [items.DayOldFrenchBaguette(),
                           items.DayOldFrenchBaguette(),
                           items.RumAndCoke(),
-                          items.FourPackOfRedBull()]
+                          items.FourPackOfRedBull()
+                         items.randomconsume
+                         items.randomweapon]
 
 
 class HiLineVendingMachine(NonPlayableCharacter):
@@ -59,13 +63,13 @@ class HiLineVendingMachine(NonPlayableCharacter):
         self.inventory = [items.DayOldFrenchBaguette(),
                           items.DayOldFrenchBaguette(),
                           items.DayOldFrenchBaguette(),
-                          items.DayOldFrenchBaguette(),
+                          items.randomconsume,
                           items.RumAndCoke(),
                           items.RumAndCoke(),
-                          items.RumAndCoke(),
+                          items.randomitem,
                           items.FourPackOfRedBull(),
                           items.FourPackOfRedBull(),
-                          items.FourPackOfRedBull(),
+                          items.randomconsume,
                           items.BottleOfAspirin(),
-                          items.BottleOfAspirin()]
+                          items.randomconsume]
 
