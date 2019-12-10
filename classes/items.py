@@ -156,6 +156,11 @@ class TwoBottlesOfAspirin(FindItem):
     def __init__(self):
         self.name = "Two Bottles of Aspirin"  # need to create a formula that connects the FoundItemTile and the TwoBottlesOfAspirin
         self.value = 150
+        
+""" Each class item created here is assigned a variable and seperated by their parent class.
+    The variables are assigned to seperate lists so the function random.choice will work
+    correctly.  random.choice selects a variable that will be imported into the npc.py file
+    """
 
 weapon1 = Rock()
 weapon2 = Dagger()
@@ -163,7 +168,7 @@ weapon3 = RustySword()
 weapon4 = LaserSaber()
 weapon5 = BlobBlaster()
 weapon6 = Phaser()
-weapon7 = DreadSword()
+weapon7 = DeadSword()
 
 consume1 = DayOldFrenchBaguette()
 consume2 = CrustyBread()
@@ -182,4 +187,4 @@ itemlist = [item1, item2, item3, item4]
 
 randomweapon = random.choice(weaponlist)
 randomconsume = random.choice(consumelist)
-itemlist = random.choice(itemlist)
+randomitem = random.choice(itemlist)
