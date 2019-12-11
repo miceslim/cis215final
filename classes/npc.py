@@ -73,3 +73,6 @@ class HiLineVendingMachine(NonPlayableCharacter):
                           items.BottleOfAspirin(),
                           items.randomconsume]
 
+""" New variables are introduced to the inventories of the traders and the vending machine.  
+    These variables are called from the item.py class file.
+"""
